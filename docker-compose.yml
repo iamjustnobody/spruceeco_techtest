@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  backend:
+    build:
+      context: ./back_end
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    volumes:
+      - sqlite-data:/app/data
+    environment:
+      - NODE_ENV=production
+      - RENDER=true
+      - DATABASE_LIVE_PATH=/app/data/game.db
+    # command: node server.js
+    # command: npx ts-node src/server.ts
+    depends_on:
+      - frontend
+
+  frontend:
+    # build: ./front_end
+    ports:
+      - "5173:5173"
+    build:
+      context: ./front_end
+      dockerfile: Dockerfile
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=http://localhost:4000
+
+  volumes:
+    sqlite-data:
