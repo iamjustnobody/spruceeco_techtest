@@ -9,7 +9,7 @@ import { maxBoardSize, stepsToWinOptions } from "@/common/constants";
 import { useToast } from "@/hooks/useToast";
 // import clsx from "clsx";
 // import { APP_ROUTES, ROUTE_PATHS } from "@/routes";
-import { ROUTE_PATHS } from "@/routes";
+import { ROUTE_PATHS } from "@/routes/router";
 import { useRoutes } from "@/hooks/useRoutes";
 
 const GamePage: React.FC = () => {

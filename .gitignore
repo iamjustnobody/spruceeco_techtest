@@ -7,13 +7,14 @@ yarn-error.log*
 # Dependency directories
 node_modules/
 
-# Production builds
+# Production builds - vite build output -> dist/
 dist/
 build/
 coverage/
 
-# Environment variables
+# dotenv Environment variables
 .env
+.env.*
 
 # OS and Editor-specific
 .DS_Store
@@ -40,3 +41,9 @@ __tests__/
 # Optional: ignore FE/BE build artifacts
 frontend/build/
 backend/dist/
+
+# Firebase stuff (if using emulators or config locally)
+.firebase/
+firestore.indexes.json
+firestore.rules
+storage.rules

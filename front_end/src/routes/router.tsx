@@ -1,28 +1,36 @@
 // import Game from "@/pages/Game";
 // import Home from "@/pages/Home";
 
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
 import { Navigate } from "react-router-dom";
 
-const Home = lazy(() => import("@/pages/Home"));
-const Game = lazy(() => import("@/pages/Game"));
+export const Home = lazy(() => import("@/pages/Home"));
+export const Game = lazy(() => import("@/pages/Game"));
 
 export const APP_ROUTES = [
   {
     name: "game",
     // path: "/game/*",  -> navigate to /game
     path: "/game",
-    element: <Game />,
+    element: (
+      <Suspense fallback={<div>Loading game...</div>}>
+        <Game />
+      </Suspense>
+    ),
   },
   {
-    name: "game_nav",
+    name: "game_redirect",
     path: "/game/*",
     element: <Navigate to="/game" replace />,
   },
   {
     name: "home",
     path: "/",
-    element: <Home />,
+    element: (
+      <Suspense fallback={<div>Loading home...</div>}>
+        <Home />
+      </Suspense>
+    ),
   },
   // {
   //   name: "not-found",
@@ -30,7 +38,7 @@ export const APP_ROUTES = [
   //   element: <NotFound />, // 404
   // },
   {
-    name: "not_found_nav",
+    name: "not_found_redirect_to_home",
     path: "*", // or "/*";
     element: <Navigate to="/" replace />,
   },

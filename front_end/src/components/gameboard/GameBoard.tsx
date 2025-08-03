@@ -1,10 +1,10 @@
 import type { Player } from "@/types";
 import React from "react";
 
-// interface PlayerStyle {
-//   shape: string;
-//   color: string;
-// }
+interface PlayerStyle {
+  shape: string;
+  color: string;
+}
 
 interface GameBoardProps {
   board: (number | null)[][];
