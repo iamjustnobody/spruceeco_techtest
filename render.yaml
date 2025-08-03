@@ -2,9 +2,31 @@ services:
   - type: web
     name: backend-service
     env: node
+    region: frankfurt
+    plan: free
     rootDir: back_end
-    buildCommand: npm install
-    startCommand: node server.js
+    buildCommand: npm install && npm run build
+    startCommand: node dist/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: RENDER
+        value: "true"
+      - key: SQLITE_DB_PATH
+        value: /app/data/game.db
+    disk:
+      name: sqlite-persistence
+      mountPath: /app/data
+      sizeGB: 1
+
+  - type: static
+    name: frontend-service
+    region: frankfurt
+    plan: free
+    rootDir: front_end
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    autoDeploy: true
     envVars:
       - key: NODE_ENV
         value: production
