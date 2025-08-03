@@ -7,7 +7,9 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const db: BetterSqliteDatabase = new Database("game.db");
+// const db: BetterSqliteDatabase = new Database("game.db");
+const dbPath = path.join("/tmp", "game.db");
+const db: BetterSqliteDatabase = new Database(dbPath);
 db.exec("PRAGMA foreign_keys = ON;");
 
 // Load schema (optional, or run from CLI once)
