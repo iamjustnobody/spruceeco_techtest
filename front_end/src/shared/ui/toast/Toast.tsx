@@ -19,7 +19,7 @@ const iconMap: Record<ToastType, JSX.Element> = {
 };
 
 export const Toast: React.FC<ToastProps> = ({
-  id,
+  // id,
   message,
   type = "info",
   onClose,

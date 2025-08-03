@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+// import { useState } from "react";
+// import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+import React from "react";
 import type { Player } from "@/types";
 
 interface PlayerDropdownProps {

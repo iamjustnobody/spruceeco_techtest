@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { generateEmptyBoard, getGapClass, checkWinner } from "../lib/gameUtil";
 import GameBoard from "../components/gameboard/GameBoard";
 import { PlayerDropdown, PlayerPanel } from "../components/player";
-import type { Player } from "@/types";
+// import type { Player } from "@/types";
 import { usePlayerContext } from "@/context/player/playerContext";
 import { maxBoardSize, stepsToWinOptions } from "@/common/constants";
 import { useToast } from "@/hooks/useToast";
-import clsx from "clsx";
-import { APP_ROUTES, ROUTE_PATHS } from "@/routes";
+// import clsx from "clsx";
+// import { APP_ROUTES, ROUTE_PATHS } from "@/routes";
+import { ROUTE_PATHS } from "@/routes";
 import { useRoutes } from "@/hooks/useRoutes";
 
 const GamePage: React.FC = () => {
