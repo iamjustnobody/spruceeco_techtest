@@ -1,0 +1,42 @@
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+
+# Production builds
+dist/
+build/
+coverage/
+
+# Environment variables
+.env
+
+# OS and Editor-specific
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Testing
+*.test.js
+*.spec.js
+__tests__/
+
+# Temporary files
+*.swp
+*.tmp
+
+# Next.js specific (if used)
+.next/
+
+# React specific
+*.env.local
+.env.*
+
+# Optional: ignore FE/BE build artifacts
+frontend/build/
+backend/dist/
