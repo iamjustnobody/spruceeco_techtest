@@ -8,10 +8,10 @@ type Props = {
 export default function PlayerStatsResult({ stats }: Props) {
   if (!stats) return null;
   if (stats?.length === 0)
-    return <div className="text-gray-400 mt-4">No stats found.</div>;
+    return <div className="text-gray-400">No stats found.</div>;
 
   return (
-    <div className="mt-6 w-full max-w-md mx-auto">
+    <div className="w-full max-w-md mx-auto">
       <table className="w-full border border-gray-700 text-sm text-white">
         <thead className="bg-gray-800">
           <tr>

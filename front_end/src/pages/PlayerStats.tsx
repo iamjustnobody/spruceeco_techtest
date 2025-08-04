@@ -3,6 +3,7 @@ import PlayerStatsResult from "@/components/player/StatsSummary";
 import { config } from "@/config";
 import { useToast } from "@/hooks/useToast";
 import { fetchPlayerStats } from "@/services/playerService";
+import { LoadingStats } from "@/shared/ui/skeletonPlaceholder/LoadingStats";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 
@@ -115,7 +116,9 @@ export default function PlayerStats() {
   };
 
   return (
-    <div className="p-4">
+    <div //className="p-4 bg-gray-900 text-white rounded-lg shadow-md"
+      className="p-4"
+    >
       <h2 className="text-xl font-bold mb-4">{username}</h2>
 
       <div className="w-full flex flex-col sm:flex-row justify-center items-center my-4 gap-4">
@@ -171,22 +174,27 @@ export default function PlayerStats() {
         </button>
       </div>
 
-      {/* <div className="text-sm text-gray-500 mb-4">
+      <div //className="border border-gray-700 p-4 rounded-lg bg-gray-900 mt-4"
+        className="min-h-[300px] transition-all duration-300 mt-6"
+      >
+        {/* <div className="text-sm text-gray-500 mb-4">
         {boardSize ? `Board Size: ${boardSize} x ${boardSize}` : "Any Board Size"}{" "}
         | {marksToWin ? `Win Condition: ${marksToWin}` : "Any Win Condition"}{" "}
         | {opponent ? `Opponent: ${opponent}` : "Any Opponent"} */}
-      {!config.enableLocalHostApiCalls && (
-        <p className="text-sm text-gray-500 mb-4">API disabled</p>
-      )}
-      {loading && config.enableLocalHostApiCalls && (
-        <div className="text-center text-gray-300 mt-4">Loading stats...</div>
-      )}
-      {error && config.enableLocalHostApiCalls && (
-        <div className="text-center text-red-500 mt-4">{error}</div>
-      )}
-      {!loading && !error && config.enableLocalHostApiCalls && (
-        <PlayerStatsResult stats={PlayerStats} />
-      )}
+        {!config.enableLocalHostApiCalls && (
+          <p className="text-sm text-gray-500 mb-4">API disabled</p>
+        )}
+        {loading && config.enableLocalHostApiCalls && (
+          // <div className="text-center text-gray-300 mt-4">Loading stats...</div>
+          <LoadingStats />
+        )}
+        {error && config.enableLocalHostApiCalls && (
+          <div className="text-center text-red-500 mt-4">{error}</div>
+        )}
+        {!loading && !error && config.enableLocalHostApiCalls && (
+          <PlayerStatsResult stats={PlayerStats} />
+        )}
+      </div>
     </div>
   );
 }
