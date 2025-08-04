@@ -7,7 +7,7 @@ type Props = {
 
 export default function PlayerStatsResult({ stats }: Props) {
   if (!stats) return null;
-  if (stats.length === 0)
+  if (stats?.length === 0)
     return <div className="text-gray-400 mt-4">No stats found.</div>;
 
   return (
@@ -22,7 +22,7 @@ export default function PlayerStatsResult({ stats }: Props) {
           </tr>
         </thead>
         <tbody>
-          {stats?.map((s) => (
+          {(stats as StatsSummary[])?.map((s) => (
             <tr key={s.username} className="text-center">
               <td className="border px-3 py-2">{s.username}</td>
               <td className="border px-3 py-2">{s.wins}</td>

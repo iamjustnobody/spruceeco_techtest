@@ -97,7 +97,7 @@ export default function PlayerStats() {
       setError(null);
 
       const stats = await fetchPlayerStats(username, query);
-      setPlayerStats(stats);
+      setPlayerStats([stats]);
     } catch (err: any) {
       setError("Failed to load player stats.");
       toast(
