@@ -107,7 +107,7 @@ export function savePlayer(username: string) {
 }
 
 export function getPlayerStatsService(username: string, query: any) {
-  // Case-sensitive player lookup
+  // case-sensitive player lookup
   const player = db
     .prepare(`SELECT * FROM player WHERE username = ?`)
     .get(username) as Partial<Player>;

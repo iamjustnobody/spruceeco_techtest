@@ -1,3 +1,4 @@
+import type { Player } from "@/models/index.js";
 import db from "../db/index.js";
 
 // import db from "@/db/index.js";
@@ -14,6 +15,15 @@ type PlayerStatsRow = { wins: number; losses: number; draws: number };
 export function saveMatch(input: MatchInput) {
   const id = crypto.randomUUID(); //uuidv4();
 
+  const playerX = db
+    .prepare(`SELECT id FROM player WHERE username = ?`)
+    .get(input.player_x);
+  if (!playerX) throw new Error(`Player not found: ${input.player_x}`);
+  const playerO = db
+    .prepare(`SELECT id FROM player WHERE username = ?`)
+    .get(input.player_o);
+  if (!playerO) throw new Error(`Player not found: ${input.player_o}`);
+
   const stmt = db.prepare(`
     INSERT INTO matches (id, player_x, player_o, board_size, win_condition, winner)
     VALUES (?, ?, ?, ?, ?, ?)
@@ -21,8 +31,10 @@ export function saveMatch(input: MatchInput) {
 
   stmt.run(
     id,
-    input.player_x,
-    input.player_o,
+    // input.player_x,
+    // input.player_o,
+    (playerX as Partial<Player>).id,
+    (playerO as Partial<Player>).id,
     input.board_size,
     input.win_condition,
     input.winner

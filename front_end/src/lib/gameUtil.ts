@@ -1,10 +1,13 @@
-// lib/gameUtils.ts
-
 export type Cell = {
   row: number;
   col: number;
   player: number | null;
 };
+
+export type CheckWinnerPathOutcome = {
+  winningPlayer: number;
+  path: [number, number][];
+} | null;
 
 export function checkWinner(
   board: (number | null)[][],
@@ -34,6 +37,41 @@ export function checkWinner(
           if (count === marksToWin) return player;
           r += dr;
           c += dc;
+        }
+      }
+    }
+  }
+
+  return null;
+}
+
+export function checkWinnerWinningPath(
+  board: (number | null)[][],
+  marksToWin: number
+): CheckWinnerPathOutcome | null {
+  const size = board.length;
+  const directions = [
+    [0, 1], // right
+    [1, 0], // down
+    [1, 1], // down-right
+    [1, -1], // down-left
+  ];
+
+  for (let r = 0; r < size; r++) {
+    for (let c = 0; c < size; c++) {
+      const player = board[r][c];
+      if (player === null) continue;
+
+      for (const [dr, dc] of directions) {
+        const path: [number, number][] = [[r, c]];
+        let i = 1;
+        while (i < marksToWin && board[r + dr * i]?.[c + dc * i] === player) {
+          path.push([r + dr * i, c + dc * i]);
+          i++;
+        }
+
+        if (path.length === marksToWin) {
+          return { winningPlayer: player, path };
         }
       }
     }

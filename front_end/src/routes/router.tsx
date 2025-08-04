@@ -6,6 +6,7 @@ import { Navigate } from "react-router-dom";
 
 export const Home = lazy(() => import("@/pages/Home"));
 export const Game = lazy(() => import("@/pages/Game"));
+export const PlayerStats = lazy(() => import("@/pages/PlayerStats"));
 
 export const APP_ROUTES = [
   {
@@ -29,6 +30,15 @@ export const APP_ROUTES = [
     element: (
       <Suspense fallback={<div>Loading home...</div>}>
         <Home />
+      </Suspense>
+    ),
+  },
+  {
+    name: "player_stats",
+    path: "/player/stats/:username",
+    element: (
+      <Suspense fallback={<div>Loading stats...</div>}>
+        <PlayerStats />
       </Suspense>
     ),
   },

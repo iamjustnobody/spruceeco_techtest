@@ -1,6 +1,7 @@
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import React from "react";
 import type { Player } from "@/types";
+import { useLocation } from "react-router-dom";
 
 interface PlayerDropdownProps {
   player: Player;

@@ -17,7 +17,7 @@ export interface Matchup {
   whoStarted: string;
   winner: string | null;
   timestamp: Date;
-  boardState?: string[][]; // optional final board state
+  boardState?: string[][]; // opt
 }
 export type NewMatch = Omit<Matchup, "id" | "timestamp">;
 

@@ -1,6 +1,9 @@
 import { defaultColors, defaultShapes } from "@/common/constants";
+import { config } from "@/config";
 import { usePlayerContext } from "@/context/player/playerContext";
 import { useRoutes } from "@/hooks/useRoutes";
+import { useToast } from "@/hooks/useToast";
+import { savePlayer } from "@/services/playerService";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -10,10 +13,11 @@ const Home = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const routes = useRoutes();
+  const toast = useToast(); //usePlayerContext().toast;
 
   const { dispatch } = usePlayerContext();
 
-  const handleStart = () => {
+  const hanldeValidation = () => {
     if (!player1 || !player2) {
       setError("Both usernames are required.");
       return;
@@ -23,7 +27,8 @@ const Home = () => {
       setError("Usernames must be unique.");
       return;
     }
-
+  };
+  const startGamePostActions = () => {
     dispatch({
       type: "SET_PLAYERS",
       payload: [
@@ -47,7 +52,43 @@ const Home = () => {
       state: { players: [player1.trim(), player2.trim()] },
     });
   };
+  const saveBothPlayers_Api = async () => {
+    try {
+      const data = await Promise.all([
+        savePlayer(player1.trim()),
+        savePlayer(player2.trim()),
+      ]);
 
+      const [player1Data, player2Data] = data;
+
+      // if (data.success) {
+      //   startGamePostActions();
+      // } else {
+      //   setError(data.message || "Failed to start the game.");
+      // }
+      if (!player1Data || !player2Data) {
+        setError("An error occurred while saving the players.");
+        toast("An error occurred while saving the players.", "error");
+        return;
+      } else startGamePostActions();
+    } catch (err) {
+      setError("Failed to save players"); //"An error occurred while starting the game."
+      console.error("Error:", err);
+      toast("Failed to save players. Please try again later.", "error");
+    }
+  };
+
+  const handleStart = () => {
+    setError("");
+    hanldeValidation();
+
+    if (error) return;
+
+    if (!config.enableLocalHostApiCalls) startGamePostActions();
+    else {
+      saveBothPlayers_Api();
+    }
+  };
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white px-4">
       <h1 className="text-3xl font-bold mb-6">Tic Tac Toe</h1>

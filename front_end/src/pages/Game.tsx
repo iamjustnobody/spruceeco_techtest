@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { generateEmptyBoard, getGapClass, checkWinner } from "../lib/gameUtil";
+import {
+  generateEmptyBoard,
+  getGapClass,
+  checkWinner,
+  checkWinnerWinningPath,
+  type CheckWinnerPathOutcome,
+} from "../lib/gameUtil";
 import GameBoard from "../components/gameboard/GameBoard";
 import { PlayerDropdown, PlayerPanel } from "../components/player";
 // import type { Player } from "@/types";
@@ -11,6 +17,8 @@ import { useToast } from "@/hooks/useToast";
 // import { APP_ROUTES, ROUTE_PATHS } from "@/routes";
 import { ROUTE_PATHS } from "@/routes/router";
 import { useRoutes } from "@/hooks/useRoutes";
+import { APIs, config } from "@/config";
+import { saveMatch } from "@/services/matchService";
 
 const GamePage: React.FC = () => {
   const navigate = useNavigate();
@@ -22,6 +30,9 @@ const GamePage: React.FC = () => {
   const [whoStartsFirst, setWhoStartsFirst] = useState(0);
   const [currentPlayer, setCurrentPlayer] = useState(whoStartsFirst);
   const [gameStatus, setGameStatus] = useState<"ON" | "OFF">("OFF");
+
+  const [winnerWinningPath, setWinnerWinningPath] =
+    useState<CheckWinnerPathOutcome>(null);
 
   const { state, dispatch: setPlayers } = usePlayerContext();
   const players = state.players;
@@ -49,6 +60,7 @@ const GamePage: React.FC = () => {
       setCurrentPlayer(whoStartsFirst);
     }
     if (winner != null) setWinner(null);
+    setWinnerWinningPath(null);
     // setGameStatus("OFF");
     setGameStatus("ON");
   };
@@ -74,26 +86,74 @@ const GamePage: React.FC = () => {
     newBoard[row][col] = currentPlayer;
     setBoard(newBoard);
 
-    const result = checkWinner(newBoard, marksToWin);
+    //method 1
+    // const result = checkWinner(newBoard, marksToWin);
+    // const winnerIndex: number = result !== null ? result : -1;
+    //method 2
+    const result = checkWinnerWinningPath(newBoard, marksToWin);
+    const winnerIndex: number = result !== null ? result.winningPlayer : -1;
+
+    const matchFinished =
+      result !== null || newBoard.flat().every((cell) => cell !== null);
+
     if (result !== null) {
-      setWinner(result);
-      // setPlayers({ type: "INCREMENT_WIN", index: result });
-      // setPlayers({ type: "INCREMENT_LOSE", index: result === 0 ? 1 : 0 });
-
-      setPlayers({ type: "FINISH_MATCH", payload: { winnerIndex: result } });
-
-      if (gameStatus === "ON") setGameStatus("OFF");
+      setWinner(winnerIndex);
+      setWinnerWinningPath({ winningPlayer: winnerIndex, path: result.path });
+      setGameResultAfterCellClick("game_finished", winnerIndex);
     } else if (newBoard.flat().every((cell) => cell !== null)) {
       setWinner(-1);
-      // setPlayers({ type: "INCREMENT_EVEN" });
+      setWinnerWinningPath({ winningPlayer: -1, path: [] });
+      setGameResultAfterCellClick("draw", null);
+    } else {
+      setGameResultAfterCellClick("ongoing", null);
+    }
 
-      setPlayers({ type: "FINISH_MATCH", payload: { winnerIndex: null } });
-
+    if (matchFinished && config.enableLocalHostApiCalls) {
+      handleSaveMatch_Api(winnerIndex != null ? winnerIndex : null);
+    }
+  };
+  const setGameResultAfterCellClick = (
+    stageOfGame: "game_finished" | "draw" | "ongoing",
+    winnerIndex: number | null
+  ) => {
+    if (stageOfGame === "game_finished") {
+      // setPlayers({ type: "INCREMENT_WIN", index: winnerIndex });
+      // setPlayers({ type: "INCREMENT_LOSE", index: winnerIndex === 0 ? 1 : 0 });
+      setPlayers({ type: "FINISH_MATCH", payload: { winnerIndex } });
       if (gameStatus === "ON") setGameStatus("OFF");
+      return;
+    } else if (stageOfGame === "draw") {
+      // setPlayers({ type: "INCREMENT_EVEN" });
+      setPlayers({ type: "FINISH_MATCH", payload: { winnerIndex: null } });
+      if (gameStatus === "ON") setGameStatus("OFF");
+      return;
     } else {
       setCurrentPlayer((prev) => (prev === 0 ? 1 : 0));
-
       if (gameStatus === "OFF") setGameStatus("ON");
+    }
+    return;
+  };
+
+  const handleSaveMatch_Api = async (winnerResult: number | null) => {
+    try {
+      const input = {
+        player_x: players[0].username,
+        player_o: players[1].username,
+        board_size: boardSize,
+        win_condition: marksToWin,
+        winner:
+          winnerResult === null || winnerResult === -1
+            ? null
+            : players[winnerResult].username === players[0].username
+            ? "X"
+            : "O",
+      };
+
+      const res = await saveMatch(input);
+      console.log("Match saved successfully:", res);
+    } catch (err) {
+      console.error("Error saving match:", err);
+      toast("Failed to save match. Please try again later.", "error");
     }
   };
 
@@ -241,8 +301,8 @@ const GamePage: React.FC = () => {
           <PlayerPanel player={players[0]} isActive={currentPlayer === 0} />
         </div>
         <div className="md:hidden flex justify-around w-full">
-          <PlayerDropdown player={players[0]} isActive={currentPlayer === 0} />
-          <PlayerDropdown player={players[1]} isActive={currentPlayer === 1} />
+          <PlayerPanel player={players[0]} isActive={currentPlayer === 0} />
+          <PlayerPanel player={players[1]} isActive={currentPlayer === 1} />
         </div>
 
         <div className="w-full md:w-auto flex justify-center">
@@ -252,6 +312,7 @@ const GamePage: React.FC = () => {
             players={players}
             handleCellClick={handleCellClick}
             gapClass={gapClass}
+            winningPath={winnerWinningPath?.path}
           />
         </div>
 
