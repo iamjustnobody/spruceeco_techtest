@@ -1,2 +1,3 @@
-View Front-end only website on https://spruceeco-techtest.vercel.app/ (no backend APIs support as they are not deployed yet - so enableLocalHostApiCalls in the front_end/src/config.ts is set to false; could change it to true to fire backend localhost api calls if running locally on the machine)
-I should have used postgreSql or MongoDB but in the end I used better-sqlite3 instead in the backend - simply because I did not use it before; plan to upgrade the DB to postgreSql if I have time
+- View Front-end only website on https://spruceeco-techtest.vercel.app/ (no backend APIs support as they are not deployed yet - so enableLocalHostApiCalls in the front_end/src/config.ts is set to false; could change it to true to fire backend localhost api calls if running locally on the machine)
+
+- I should have used postgreSql or MongoDB but in the end I used better-sqlite3 instead in the backend - simply because I did not use it before; plan to upgrade the DB to postgreSql if I have time
