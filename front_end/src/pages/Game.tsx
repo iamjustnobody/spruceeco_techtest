@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   generateEmptyBoard,
@@ -27,7 +27,7 @@ const GamePage: React.FC = () => {
   const [board, setBoard] = useState(generateEmptyBoard(3));
 
   const [winner, setWinner] = useState<null | number>(null);
-  const [whoStartsFirst, setWhoStartsFirst] = useState(0);
+  const [whoStartsFirst, setWhoStartsFirst] = useState(1);
   const [currentPlayer, setCurrentPlayer] = useState(whoStartsFirst);
   const [gameStatus, setGameStatus] = useState<"ON" | "OFF">("OFF");
 
@@ -37,6 +37,7 @@ const GamePage: React.FC = () => {
   const { state, dispatch: setPlayers } = usePlayerContext();
   const players = state.players;
 
+  const hasMounted = useRef(false);
   const routes = useRoutes();
   useEffect(() => {
     if (players.length < 2) {
@@ -46,6 +47,10 @@ const GamePage: React.FC = () => {
   }, [players]);
 
   useEffect(() => {
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+      return;
+    }
     setBoard(generateEmptyBoard(boardSize));
     // restart(false);
     restart(gameStatus === "OFF" ? true : false);
