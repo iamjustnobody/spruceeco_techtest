@@ -69,7 +69,9 @@
     // }
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@routes/*": ["src/routes/*"],
+      "@utils/*": ["src/utils/*"]
     }
   },
   "include": ["src/**/*", "src"],

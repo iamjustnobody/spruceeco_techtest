@@ -5,9 +5,20 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --watch src --ext ts,mts,cts,json --exec \"node --loader ts-node/esm\" src/server.ts",
+    // "dev": "nodemon --watch src --ext ts,mts,cts,json --exec \"node --loader ts-node/esm\" src/server.ts",
+    "dev":"dotenvx run tsx watch src/server.ts",
+    // "dev:ts-node": "nodemon --watch src --ext ts,mts,cts,json --exec ts-node --esm src/server.ts",
+    // "dev:tsx": "nodemon --watch src --ext ts,mts,cts,json --exec tsx src/server.ts",
+    // "dev": "nodemon --watch src --ext ts,mts,cts,json --exec ts-node --esm src/server.ts",
+    "lint": "eslint . --ext .ts,.tsx,.mts,.cts",
+    "lint:fix": "eslint . --ext .ts,.tsx,.mts,.cts --fix",
+    "format": "prettier --write .",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "build:watch": "tsc --watch",
+    "start": "node dist/server.js",
+    "prod:watch": "node --watch dist/server.js",
+    "build&prod:watch": "concurrently \"tsc --watch\" \"node --watch dist/server.js\"",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",
@@ -24,8 +35,8 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/node": "^24.1.0",
-    "nodemon": "^3.1.10",
-    "ts-node": "^10.9.2",
+    // "nodemon": "^3.1.10",
+    // "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   }
 }
