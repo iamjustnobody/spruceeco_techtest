@@ -3,22 +3,40 @@
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
+  "_notes": {
+    "info": "This section holds explanations for each script instead of using // comments.",
+    "dev_standalone": "Run tsx directly without dotenv",
+    "dev": "Run tsx with dotenvx default env file",
+    "dev_env_specific": "Run tsx with a specific env file",
+    "start_env_specific": "Run compiled server.js with encrypted env file",
+    "build&prod:watch": "Compile in watch mode and run dist/server.js with hot reload",
+    "build&prod_env_specific:watch": "Same as above but with encrypted env file"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    // "dev": "nodemon --watch src --ext ts,mts,cts,json --exec \"node --loader ts-node/esm\" src/server.ts",
-    "dev":"dotenvx run tsx watch src/server.ts",
-    // "dev:ts-node": "nodemon --watch src --ext ts,mts,cts,json --exec ts-node --esm src/server.ts",
-    // "dev:tsx": "nodemon --watch src --ext ts,mts,cts,json --exec tsx src/server.ts",
-    // "dev": "nodemon --watch src --ext ts,mts,cts,json --exec ts-node --esm src/server.ts",
+    "dev_standalone":"tsx watch src/server.ts",
+    "dev": "dotenvx run tsx watch src/server.ts",
+    "dev_env_specific": "dotenvx run -f .env -- tsx watch src/server.ts",
     "lint": "eslint . --ext .ts,.tsx,.mts,.cts",
     "lint:fix": "eslint . --ext .ts,.tsx,.mts,.cts --fix",
     "format": "prettier --write .",
     "build": "tsc",
     "build:watch": "tsc --watch",
     "start": "node dist/server.js",
+    "start_env": "dotenvx run node dist/server.js",
+    // "start_env_specific": "dotenvx run node --require dotenv/config dist/server.js",
+    "start_env_specific:preview":"dotenvx run -f .env.encrypted -- node dist/server.js",
+    
     "prod:watch": "node --watch dist/server.js",
-    "build&prod:watch": "concurrently \"tsc --watch\" \"node --watch dist/server.js\"",
-    "typecheck": "tsc --noEmit"
+    "prod_env:watch": "dotenvx run -- node --watch dist/server.js",
+    "prod_env_specific:watch": "dotenvx run -f .env.encrypted -- node --watch dist/server.js",
+    // "build&prod:watch": "concurrently \"tsc --watch\" \"node --watch dist/server.js\"",
+    // "build&prod_env_specific:watch": "dotenvx run -f .env.encrypted -- concurrently \"tsc --watch\" \"node --watch dist/server.js\"",
+     "build&prod:watch": "concurrently -n \"TSC,NODE\" -c \"cyan,green\" \"tsc --watch\" \"node --watch dist/server.js\"",
+    "build&prod_env_specific:watch": "dotenvx run -f .env.encrypted -- concurrently -n \"TSC,NODE\" -c \"cyan,green\" \"tsc --watch\" \"node --watch dist/server.js\"",
+    "typecheck": "tsc --noEmit",
+    "dev:prod": "npm run build&prod_env_specific:watch"
+
   },
   "keywords": [],
   "author": "",
@@ -35,8 +53,7 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/node": "^24.1.0",
-    // "nodemon": "^3.1.10",
-    // "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
     "typescript": "^5.9.2"
   }
 }
