@@ -36,6 +36,9 @@ __tests__/
 
 # React specific
 *.env.local
+*.env.development
+*.env.production
+*.env.*.local
 .env.*
 
 # Optional: ignore FE/BE build artifacts
