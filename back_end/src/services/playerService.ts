@@ -1,7 +1,7 @@
-import db from "../db/index.js";
 // import { v4 as uuidv4 } from "uuid";
-// import db from "@/db/index.js";
-import type { Player, PlayerStats } from "../models/index.js";
+import db from "@/db/index.js";
+import type { Player, PlayerStats } from "@/models/index.js";
+// import type { Player, PlayerStats } from "../models/index.js";
 
 type Stats = {
   username: string;
