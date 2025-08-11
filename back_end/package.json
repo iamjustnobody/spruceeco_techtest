@@ -23,8 +23,6 @@
     "build:init": "tsc",
     "build": "tsc && tsc-alias && echo 'Build completed'",
     "build:watch:init": "tsc --watch",
-    // "build_env_specific": "dotenvx run -f .env.encrypted -- tsc && tsc-alias && echo 'Build completed with encrypted env'",
-    // "build_env_specific:watch": "dotenvx run -f .env.encrypted -- tsc --watch",
     "build:watch": "concurrently -n \"TSC,ALIAS\" -c \"cyan,magenta\" \"tsc --watch\" \"chokidar dist --initial --command 'tsc-alias'\"",
     "prod": "node dist/server.js",
     "start": "node dist/server.js",
@@ -55,7 +53,9 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/node": "^24.1.0",
+    "chokidar-cli": "^3.0.0",
     "concurrently": "^9.2.0",
+    "tsc-alias": "^1.8.16",
     "tsx": "^4.20.3",
     "typescript": "^5.9.2"
   }
