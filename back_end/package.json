@@ -14,9 +14,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev_standalone": "tsx watch src/server.ts",
-    "dev": "dotenvx run tsx watch src/server.ts",
-    "dev_env_specific": "dotenvx run -f .env -- tsx watch src/server.ts",
+    "dev": "tsx watch src/server.ts",
     "lint": "eslint . --ext .ts,.tsx,.mts,.cts",
     "lint:fix": "eslint . --ext .ts,.tsx,.mts,.cts --fix",
     "format": "prettier --write .",
@@ -24,20 +22,13 @@
     "build": "tsc && tsc-alias && echo 'Build completed'",
     "build:watch:init": "tsc --watch",
     "build:watch": "concurrently -n \"TSC,ALIAS\" -c \"cyan,magenta\" \"tsc --watch\" \"chokidar dist --initial --command 'tsc-alias'\"",
-    "prod": "node dist/server.js",
     "start": "node dist/server.js",
-    "start_env": "dotenvx run node dist/server.js",
-    "start_env_specific:preview": "dotenvx run -f .env.encrypted -- node dist/server.js",
     "prod:watch": "node --watch dist/server.js",
-    "prod_env:watch": "dotenvx run -- node --watch dist/server.js",
-    "prod_env_specific:watch": "dotenvx run -f .env.encrypted -- node --watch dist/server.js",
     "build&prod:watch": "concurrently -n \"TSC,NODE\" -c \"cyan,green\" \"tsc --watch\" \"node --watch dist/server.js\"",
-    "build&prod_env_specific:watch": "dotenvx run -f .env.encrypted -- concurrently -n \"TSC,NODE\" -c \"cyan,green\" \"tsc --watch\" \"node --watch dist/server.js\"",
     "build&prod:watch:alias": "concurrently -n \"TSC,ALIAS,NODE\" -c \"cyan,magenta,green\" \"tsc --watch\" \"chokidar dist --initial --command 'tsc-alias'\" \"node --watch dist/server.js\"",
-    "build&prod_env_specific:watch:alias": "dotenvx run -f .env.encrypted -- concurrently -n \"TSC,ALIAS,NODE\" -c \"cyan,magenta,green\" \"tsc --watch\" \"chokidar dist --initial --command 'tsc-alias'\" \"node --watch dist/server.js\"",
     "typecheck": "tsc --noEmit",
-    "dev:prod": "npm run build&prod_env_specific:watch",
-    "dev:prod:alias": "npm run build&prod_env_specific:watch:alias"
+    "dev:prod": "npm run build&prod:watch",
+    "dev:prod:alias": "npm run build&prod:watch:alias"
   },
   "keywords": [],
   "author": "",
@@ -46,6 +37,7 @@
   "dependencies": {
     "better-sqlite3": "^12.2.0",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
     "express": "^5.1.0"
   },
   "devDependencies": {
