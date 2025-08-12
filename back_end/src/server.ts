@@ -4,23 +4,28 @@ import dotenv from "dotenv";
 import fs from "fs";
 
 // dotenv.config(); // loads from .env into process.env
-// dotenv.config({ path: `.env.${process.env.NODE_ENV || "development"}` });
-const env = process.env.NODE_ENV || "development";
-const envFile = `.env.${env}`;
 
-// Load the base .env first (if exists)
-if (fs.existsSync(".env")) {
-  dotenv.config();
+const env = process.env.NODE_ENV || "development";
+const baseEnvPath = ".env";
+const envPath = `.env.${env}`;
+const localEnvPath = ".env.local";
+
+if (fs.existsSync(baseEnvPath)) {
+  dotenv.config({ path: baseEnvPath });
   console.log("Loaded .env");
 }
 
-// Override with environment-specific .env file if it exists
-if (fs.existsSync(envFile)) {
-  dotenv.config({ path: envFile });
-  console.log(`Loaded ${envFile}`);
+if (fs.existsSync(envPath)) {
+  dotenv.config({ path: envPath });
+  console.log(`Loaded ${envPath}`);
 }
 
-const PORT = 4000;
+if (fs.existsSync(localEnvPath)) {
+  dotenv.config({ path: localEnvPath });
+  console.log("Loaded .env.local");
+}
+
+const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
   console.log(`Server listening on http://localhost:${PORT}`);

@@ -14,7 +14,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx watch src/server.ts",
+    "dev": "cross-env NODE_ENV=development tsx watch src/server.ts",
     "lint": "eslint . --ext .ts,.tsx,.mts,.cts",
     "lint:fix": "eslint . --ext .ts,.tsx,.mts,.cts --fix",
     "format": "prettier --write .",
@@ -22,10 +22,10 @@
     "build": "tsc && tsc-alias && echo 'Build completed'",
     "build:watch:init": "tsc --watch",
     "build:watch": "concurrently -n \"TSC,ALIAS\" -c \"cyan,magenta\" \"tsc --watch\" \"chokidar dist --initial --command 'tsc-alias'\"",
-    "start": "node dist/server.js",
-    "prod:watch": "node --watch dist/server.js",
-    "build&prod:watch": "concurrently -n \"TSC,NODE\" -c \"cyan,green\" \"tsc --watch\" \"node --watch dist/server.js\"",
-    "build&prod:watch:alias": "concurrently -n \"TSC,ALIAS,NODE\" -c \"cyan,magenta,green\" \"tsc --watch\" \"chokidar dist --initial --command 'tsc-alias'\" \"node --watch dist/server.js\"",
+    "start": "cross-env NODE_ENV=production node dist/server.js",
+    "prod:watch": "cross-env NODE_ENV=production node --watch dist/server.js",
+    "build&prod:watch": "concurrently -n \"TSC,NODE\" -c \"cyan,green\" \"tsc --watch\" \"cross-env NODE_ENV=production node --watch dist/server.js\"",
+    "build&prod:watch:alias": "concurrently -n \"TSC,ALIAS,NODE\" -c \"cyan,magenta,green\" \"tsc --watch\" \"chokidar dist --initial --command 'tsc-alias'\" \"cross-env NODE_ENV=production node --watch dist/server.js\"",
     "typecheck": "tsc --noEmit",
     "dev:prod": "npm run build&prod:watch",
     "dev:prod:alias": "npm run build&prod:watch:alias"
@@ -38,15 +38,18 @@
     "better-sqlite3": "^12.2.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "pg": "^8.16.3"
   },
   "devDependencies": {
     "@tsconfig/node18": "^18.2.4",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/node": "^24.1.0",
+    "@types/pg": "^8.15.5",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.2.0",
+    "cross-env": "^10.0.0",
     "tsc-alias": "^1.8.16",
     "tsx": "^4.20.3",
     "typescript": "^5.9.2"
