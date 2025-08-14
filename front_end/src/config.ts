@@ -1,5 +1,5 @@
 export const config = {
-  enableLocalHostApiCalls: false,
+  enableLocalHostApiCalls: true,
   apiBaseUrl: "http://localhost:4000/api",
 };
 export const APIs = {

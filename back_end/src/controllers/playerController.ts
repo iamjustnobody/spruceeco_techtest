@@ -1,10 +1,8 @@
 import type { Request, Response } from "express";
 import {
   getPlayerStatsService,
-  getStats,
   savePlayer,
 } from "../services/playerService.js";
-import { getPlayerStats } from "./matchController.js";
 
 export function getPlayerStatsHandler(req: Request, res: Response) {
   const { username } = req.params;
