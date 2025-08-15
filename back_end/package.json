@@ -28,7 +28,8 @@
     "build&prod:watch:alias": "concurrently -n \"TSC,ALIAS,NODE\" -c \"cyan,magenta,green\" \"tsc --watch\" \"chokidar dist --initial --command 'tsc-alias'\" \"cross-env NODE_ENV=production node --watch dist/server.js\"",
     "typecheck": "tsc --noEmit",
     "dev:prod": "npm run build&prod:watch",
-    "dev:prod:alias": "npm run build&prod:watch:alias"
+    "dev:prod:alias": "npm run build&prod:watch:alias",
+    "build&start": "npm run build && npm run start"
   },
   "keywords": [],
   "author": "",
