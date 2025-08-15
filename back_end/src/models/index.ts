@@ -1,3 +1,6 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Pool } from "pg";
+
 export interface Player {
   username: string;
   shape?: string;
@@ -61,3 +64,21 @@ export type Match = {
   winner: "X" | "O" | null;
   playedAt: string;
 };
+
+export interface PlayerDB {
+  id?: string;
+  username: string;
+  created_at?: string;
+}
+
+export interface MatchDB {
+  id?: string;
+  board_size: number;
+  win_condition: number;
+  player_x: string;
+  player_o: string;
+  winner: "X" | "O" | null;
+  played_at: string;
+}
+
+export type DatabaseType = Pool | SupabaseClient<any, "public", any>;
