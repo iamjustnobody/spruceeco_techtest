@@ -15,8 +15,10 @@ app.use(
       "https://spruceeco-techtest.vercel.app", // production frontend
       "https://spruceeco-techtest-iamjustnobodys-projects.vercel.app", // optional: preview builds
       "https://spruceeco-techtest-git-main-iamjustnobodys-projects.vercel.app/", // auto-generated deployment URLs for main branch
-    ],
-    methods: ["POST", "GET"],
+    ], // /\.vercel\.app$/, // any vercel.app subdomain
+    methods: ["POST", "GET"], //['PUT', 'DELETE', 'OPTIONS'],
+    // allowedHeaders: ["Content-Type", "Authorization"],
+    // credentials: true,
   })
 );
 app.use("/api/matches", matchRoutes);
