@@ -10,11 +10,15 @@ app.use(express.json());
 // app.use(cors());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173", // keep for local dev
+      "https://spruceeco-techtest.vercel.app", // production frontend
+      "https://spruceeco-techtest-iamjustnobodys-projects.vercel.app", // optional: preview builds
+      "https://spruceeco-techtest-git-main-iamjustnobodys-projects.vercel.app/", // auto-generated deployment URLs for main branch
+    ],
     methods: ["POST", "GET"],
   })
 );
-
 app.use("/api/matches", matchRoutes);
 app.use("/api/players", playerRoutes);
 
